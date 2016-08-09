@@ -14,47 +14,54 @@ function checkEnter(event) {
   }
 };
 
+//When user clicks the button, run inputValidation()
 button.addEventListener("click",inputValidation);
 
 //Functions
 function inputValidation() {
   userInputHeightValue = userInputHeight.value;
   userInputCharacterValue = userInputCharacter.value;
+  //Check if user entered values
   if (userInputHeightValue === "" || userInputCharacterValue === "") {
     alert("Please fill in both fields.");
-    console.log("Error");
+    //Ensure user only entered one character
+  } else if (userInputCharacterValue.length > 1) {
+    alert("Please enter a single character.");
+    //Ensure user entered a number value for height
+  } else if (isNaN(userInputHeightValue)) {
+    alert("Please enter a number.");
+    //If no user errors, create object out of user's entries
   } else {
     var userInputObject = {};
     userInputObject.Height = userInputHeightValue;
     userInputObject.Character = userInputCharacterValue;
+    //pass the object to tree()
     tree(userInputObject);
   }
 }
 
-  // Start with height-1 of spaces, then add one character
-  // Each additional line, height - 1 of spaces, then add two more characters
 function tree(object) {
   var height = object.Height;
   var character = object.Character;
+  //Top of tree will always start with one character
+  var numCharsPerLine = 1;
   var tree = "";
   while (height > 0) {
+    //Add correct number of spaces to tree
     for (var i = height - 1; i > 0; i--) {
       tree += " ";
     }
-    tree += character;
+    //Add correct number of characters to the end of tree
+    for (var j = numCharsPerLine; j > 0; j--) {
+      tree += character;
+    }
+    //Each time through the while loop, print current line of tree once
     console.log(tree);
-    height--;
+    //After printing, revert tree back to empty state
     tree = "";
-  } //end of while loop
-} //end of tree()
-
-/*
-      *
-     ***
-    *****
-   *******
-  *********
- ***********
-*************
-
-*/
+    //Each time through the while loop, add two characters per tree line
+    numCharsPerLine += 2;
+    //Each time through the while loop, subtract one space per tree line
+    height--;
+  }
+}
